@@ -225,9 +225,8 @@ class QuizHomeScreen extends StatelessWidget {
 class QuizQuestion {
   final String text;
   final List<String> options;
-  final String correctAnswer;
 
-  QuizQuestion({required this.text, required this.options, required this.correctAnswer});
+  QuizQuestion({required this.text, required this.options});
 }
 
 class QuizDetailScreen extends StatefulWidget {
@@ -247,46 +246,15 @@ class QuizDetailScreen extends StatefulWidget {
 class _QuizDetailScreenState extends State<QuizDetailScreen> {
   int _currentIndex = 0;
   String? _selectedOption;
-  int _score = 0;
 
   void _nextQuestion() {
-    if (_selectedOption == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select an option first'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
-
-    if (_selectedOption == widget.questions[_currentIndex].correctAnswer) {
-      _score++;
-    }
-
     if (_currentIndex < widget.questions.length - 1) {
       setState(() {
         _currentIndex++;
         _selectedOption = null;
       });
     } else {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          title: const Text('Quiz Completed!'),
-          content: Text('Your score: $_score / ${widget.questions.length}'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close dialog
-                Navigator.pop(context); // Go back to Home
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      Navigator.pop(context); // Go back to Home on the last question
     }
   }
 
@@ -400,7 +368,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
                         ),
                       ),
                       child: Text(
-                        _currentIndex == widget.questions.length - 1 ? 'Submit' : 'Next',
+                        _currentIndex == widget.questions.length - 1 ? 'Finish' : 'Next',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Color(0xFF6A5AE0),
@@ -463,52 +431,42 @@ final List<QuizQuestion> flutterQuestions = [
   QuizQuestion(
     text: 'What is Flutter?',
     options: ['Framework', 'Database', 'Language', 'IDE'],
-    correctAnswer: 'Framework',
   ),
   QuizQuestion(
     text: 'Which language is used by Flutter?',
     options: ['Java', 'Kotlin', 'Dart', 'Swift'],
-    correctAnswer: 'Dart',
   ),
   QuizQuestion(
     text: 'What is the main building block of Flutter UI?',
     options: ['Widget', 'Component', 'Element', 'View'],
-    correctAnswer: 'Widget',
   ),
   QuizQuestion(
     text: 'Which company developed Flutter?',
     options: ['Apple', 'Microsoft', 'Google', 'Facebook'],
-    correctAnswer: 'Google',
   ),
   QuizQuestion(
     text: 'How do you run a Flutter app from the terminal?',
     options: ['flutter run', 'flutter build', 'flutter start', 'flutter test'],
-    correctAnswer: 'flutter run',
   ),
   QuizQuestion(
     text: 'What is a StatefulWidget?',
     options: ['A widget with no state', 'A widget that can change its state', 'A stateless function', 'A routing class'],
-    correctAnswer: 'A widget that can change its state',
   ),
   QuizQuestion(
     text: 'What does the pubspec.yaml file do?',
     options: ['Manages app routing', 'Defines the UI', 'Manages dependencies and assets', 'Compiles the code'],
-    correctAnswer: 'Manages dependencies and assets',
   ),
   QuizQuestion(
     text: 'Which command is used to get dependencies?',
     options: ['flutter get', 'pub fetch', 'flutter pub get', 'flutter sync'],
-    correctAnswer: 'flutter pub get',
   ),
   QuizQuestion(
     text: 'What widget is used to create a material design app?',
     options: ['CupertinoApp', 'MaterialApp', 'Scaffold', 'MaterialDesignApp'],
-    correctAnswer: 'MaterialApp',
   ),
   QuizQuestion(
     text: 'What is the equivalent of a flexbox container in Flutter?',
     options: ['Container', 'Row/Column', 'Stack', 'Align'],
-    correctAnswer: 'Row/Column',
   ),
 ];
 
@@ -516,101 +474,81 @@ final List<QuizQuestion> generalQuestions = [
   QuizQuestion(
     text: 'What is the capital of France?',
     options: ['London', 'Berlin', 'Paris', 'Madrid'],
-    correctAnswer: 'Paris',
   ),
   QuizQuestion(
     text: 'Which planet is known as the Red Planet?',
     options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
-    correctAnswer: 'Mars',
   ),
   QuizQuestion(
     text: 'Who wrote "Romeo and Juliet"?',
     options: ['Charles Dickens', 'William Shakespeare', 'Mark Twain', 'Jane Austen'],
-    correctAnswer: 'William Shakespeare',
   ),
   QuizQuestion(
     text: 'What is the largest ocean on Earth?',
     options: ['Atlantic', 'Indian', 'Arctic', 'Pacific'],
-    correctAnswer: 'Pacific',
   ),
   QuizQuestion(
     text: 'Which element has the chemical symbol "O"?',
     options: ['Gold', 'Oxygen', 'Osmium', 'Oganesson'],
-    correctAnswer: 'Oxygen',
   ),
   QuizQuestion(
     text: 'In which year did the Titanic sink?',
     options: ['1905', '1912', '1918', '1923'],
-    correctAnswer: '1912',
   ),
   QuizQuestion(
     text: 'What is the hardest natural substance on Earth?',
     options: ['Gold', 'Iron', 'Diamond', 'Platinum'],
-    correctAnswer: 'Diamond',
   ),
   QuizQuestion(
     text: 'What is the tallest mammal?',
     options: ['Elephant', 'Giraffe', 'Rhinoceros', 'Hippopotamus'],
-    correctAnswer: 'Giraffe',
   ),
   QuizQuestion(
     text: 'Which country is known as the Land of the Rising Sun?',
     options: ['China', 'Japan', 'South Korea', 'Thailand'],
-    correctAnswer: 'Japan',
   ),
   QuizQuestion(
     text: 'Who painted the Mona Lisa?',
     options: ['Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Claude Monet'],
-    correctAnswer: 'Leonardo da Vinci',
   ),
   QuizQuestion(
     text: 'How many continents are there?',
     options: ['5', '6', '7', '8'],
-    correctAnswer: '7',
   ),
   QuizQuestion(
     text: 'Which gas do plants absorb from the atmosphere?',
     options: ['Oxygen', 'Nitrogen', 'Carbon Dioxide', 'Hydrogen'],
-    correctAnswer: 'Carbon Dioxide',
   ),
   QuizQuestion(
     text: 'What is the currency of the United Kingdom?',
     options: ['Euro', 'Dollar', 'Pound Sterling', 'Yen'],
-    correctAnswer: 'Pound Sterling',
   ),
   QuizQuestion(
     text: 'Who is known as the father of modern physics?',
     options: ['Isaac Newton', 'Albert Einstein', 'Galileo Galilei', 'Nikola Tesla'],
-    correctAnswer: 'Albert Einstein',
   ),
   QuizQuestion(
     text: 'What is the longest river in the world?',
     options: ['Amazon', 'Nile', 'Yangtze', 'Mississippi'],
-    correctAnswer: 'Nile',
   ),
   QuizQuestion(
     text: 'Which of these is not a primary color?',
     options: ['Red', 'Blue', 'Green', 'Yellow'],
-    correctAnswer: 'Green',
   ),
   QuizQuestion(
     text: 'What is the smallest country in the world?',
     options: ['Monaco', 'Vatican City', 'San Marino', 'Liechtenstein'],
-    correctAnswer: 'Vatican City',
   ),
   QuizQuestion(
     text: 'Which continent is the Sahara Desert located on?',
     options: ['Asia', 'Africa', 'Australia', 'South America'],
-    correctAnswer: 'Africa',
   ),
   QuizQuestion(
     text: 'What is the main ingredient in guacamole?',
     options: ['Tomato', 'Onion', 'Avocado', 'Pepper'],
-    correctAnswer: 'Avocado',
   ),
   QuizQuestion(
     text: 'How many bones are in the adult human body?',
     options: ['206', '208', '210', '212'],
-    correctAnswer: '206',
   ),
 ];
